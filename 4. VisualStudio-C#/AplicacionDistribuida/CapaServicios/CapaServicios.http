@@ -1,0 +1,6 @@
+@CapaServicios_HostAddress = http://localhost:5197
+
+GET {{CapaServicios_HostAddress}}/api/Proyecto
+Accept: application/json
+
+###

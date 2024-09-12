@@ -1,0 +1,91 @@
+Metadata-Version: 2.1
+Name: powerbiclient
+Version: 3.1.1
+Summary: A Custom Jupyter Widget Library
+Home-page: https://github.com/Microsoft/powerbi-jupyter
+Author: Microsoft
+Author-email: 
+License: MIT
+Keywords: Jupyter,Widgets,IPython
+Platform: Linux
+Platform: Mac OS X
+Platform: Windows
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Framework :: Jupyter
+Requires-Python: >=3.4
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: ipywidgets >=7.0.0
+Requires-Dist: jupyter-ui-poll >=0.1.2
+Requires-Dist: msal >=1.8.0
+Requires-Dist: requests >=2.25.1
+Requires-Dist: pandas
+Requires-Dist: pyspark
+Provides-Extra: demo
+Requires-Dist: pandas ; extra == 'demo'
+Requires-Dist: matplotlib ; extra == 'demo'
+Provides-Extra: test
+Requires-Dist: pytest >=4.6 ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+Requires-Dist: nbval ; extra == 'test'
+Requires-Dist: requests-mock ; extra == 'test'
+Requires-Dist: mock ; extra == 'test'
+
+# powerbi-jupyter
+
+Powerbi-jupyter is a python IPyWidget that enables customers to use Power BI embedding and reporting capabilities in a Jupyter notebook seamlessly.
+
+## Installation
+
+You can install using `pip`:
+
+```bash
+pip install powerbiclient
+```
+
+If you are using jupyterlab:
+
+```bash
+pip install powerbiclient
+jupyter labextension install @jupyter-widgets/jupyterlab-manager
+```
+
+If you are using Jupyter Notebook 5.2 or earlier, you may also need to enable
+the nbextension:
+```bash
+jupyter nbextension enable --py [--sys-prefix|--user|--system] powerbiclient
+```
+For the full list of features, refer to the [DOCUMENTATION](/DOCUMENTATION.md).
+
+## [Demo Notebooks](/demo/)
+- `Power BI report demo.ipynb`: a Jupyter notebook that embeds a user's report.
+It demonstrates the complete flow of embedding and interacting with Power BI report i.e. embedding a Power BI report, setting report event handlers, getting a list of pages and visual, exporting and visualizing visual data and applying filters.
+- `Visualize with Power BI demo.ipynb`: a Jupyter notebook that creates a quick auto-generated Power BI report over pandas DataFrames. The created reports can be customized and saved to a Power BI workspace.
+
+### Required python packages:
+- pandas
+- matplotlib - only for `report_demo.ipynb`
+
+To run the demo, first run the following commands:
+```bash
+cd demo
+jupyter notebook
+```
+Then, open and run `report_demo.ipynb` or `quick_visualize_demo.ipynb`.
+
+## Contributing
+
+This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit <https://cla.opensource.microsoft.com>.
+
+When you submit a pull request, a CLA bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
+
+Please read the [contributing guide](./CONTRIBUTING.md) before starting.
+
+## We Value and Adhere to the Microsoft Open Source Code of Conduct
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.

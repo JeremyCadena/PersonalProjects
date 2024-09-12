@@ -1,0 +1,70 @@
+# Archivos de Python compilados
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+
+# Entornos virtuales de Python
+env/
+venv/
+ENV/
+VENV/
+.env/
+.venv/
+.Python
+.pytest_cache/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Archivos de configuración y caché
+*.cache
+*.log
+*.pot
+*.mo
+*.pid
+*.egg
+*.eggs
+*.cover
+*.coverage
+.cache/
+coverage.xml
+*.manifest
+*.spec
+
+# Distribución
+dist/
+build/
+*.egg-info/
+.installed.cfg
+
+# Archivos de configuración de herramientas de análisis
+.mypy_cache/
+.pyre/
+.dmypy.json
+.pytype/
+
+# Archivos creados por IDEs o editores
+.idea/
+*.iml
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Archivos de bases de datos locales
+*.db
+*.sqlite3
+
+# Archivos de entorno local (variables de entorno)
+.env
+.env.*
+
+# Archivos de Jupyter Notebook
+.ipynb_checkpoints/
+
+# Archivos de caché de pytest
+.pytest_cache/
+
+# Archivos de seguridad (llaves privadas, tokens, etc.)
+*.pem
+*.key

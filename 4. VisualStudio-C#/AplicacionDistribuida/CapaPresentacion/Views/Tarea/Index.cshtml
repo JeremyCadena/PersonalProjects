@@ -1,0 +1,243 @@
+﻿@{
+    ViewData["Title"] = "Tarea";
+}
+
+
+<div class="row">
+    <div class="col-sm-12">
+
+        <!--Inicio tarjeta-->
+        <div class="card">
+            <div class="card-header">Tareas</div>
+            <div class="card-body">
+
+                <button class="btn btn-success" id="btnNuevo">Nueva Tarea</button>
+
+                <hr />
+
+                <table class="table table-striped" id="tbTarea">
+                    <thead>
+                        <tr>
+                            <th>Proyecto ID</th>
+                            <th>Nombre</th>
+                            <th>Descripcion</th>
+                            <th>Estado</th>
+                            <th>Encargado</th>
+                            <th>Fecha Inicio</th>
+                            <th>Acciones</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <!--Fin tarjeta-->
+
+    </div>
+</div>
+
+
+
+<!--Inicio Modal-->
+<div class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detalle Tarea</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="txtIdTarea" value="0" />
+                <div class="mb-2">
+                    <label>Proyecto ID</label>
+                    <input type="text" class="form-control" id="txtProyectoId" />
+                </div>
+                <div class="mb-2">
+                    <label>Nombre</label>
+                    <input type="text" class="form-control" id="txtNombre" />
+                </div>
+                <div class="mb-2">
+                    <label>Descripcion</label>
+                    <input type="text" class="form-control" id="txtDescripcion" />
+                </div>
+                <div class="mb-2">
+                    <label>Estado</label>
+                    <input type="text" class="form-control" id="txtEstado" />
+                </div>
+                <div class="mb-2">
+                    <label>Encargado</label>
+                    <input type="text" class="form-control" id="txtEncargado" />
+                </div>
+                <div class="mb-2">
+                    <label>Fecha Inicio</label>
+                    <input type="text" class="form-control" id="txtFechaInicio" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Fin Modal-->
+@section Scripts {
+
+    <script>
+
+        const Modelo_base = {
+            id: 0,
+            proyectoId: 0,
+            nombre: "",
+            descripcion: "",
+            estado: "",
+            asignadoA: "",
+            fechaInicio: ""
+        }
+
+        $(document).ready(() => {
+
+            listaTareas();
+        })
+
+        function mostrarModal(modelo) {
+
+            $("#txtIdTarea").val(modelo.id);
+            $("#txtProyectoId").val(modelo.proyectoId);
+            $("#txtNombre").val(modelo.nombre)
+            $("#txtDescripcion").val(modelo.descripcion)
+            $("#txtEstado").val(modelo.estado)
+            $("#txtEncargado").val(modelo.asignadoA)
+            $("#txtFechaInicio").val(modelo.fechaInicio)
+
+            $('.modal').modal('show');
+        }
+
+        $("#btnNuevo").click(() => {
+
+            mostrarModal(Modelo_base);
+        })
+
+        $("#btnGuardar").click(() => {
+            let NuevoModelo = Modelo_base;
+
+            NuevoModelo["id"] = $("#txtIdTarea").val();
+            NuevoModelo["proyectoId"] = $("#txtProyectoId").val();
+            NuevoModelo["nombre"] = $("#txtNombre").val();
+            NuevoModelo["descripcion"] = $("#txtDescripcion").val();
+            NuevoModelo["estado"] = $("#txtEstado").val();
+            NuevoModelo["asignadoA"] = $("#txtEncargado").val();
+            NuevoModelo["fechaInicio"] = $("#txtFechaInicio").val();
+
+            if ($("#txtIdTarea").val() == "0") {
+                fetch("Tarea/Insertar", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify(NuevoModelo)
+                })
+                    .then((response) => {
+                        return response.ok ? response.json() : Promise.reject(response)
+                    })
+                    .then((dataJson) => {
+
+                        if (dataJson.valor) {
+                            alert("registrado");
+                            $('.modal').modal('hide');
+                            listaTareas();
+                        }
+                    })
+            } else {
+                fetch("Tarea/Actualizar", {
+                    method: "PUT",
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify(NuevoModelo)
+                })
+                    .then((response) => {
+                        return response.ok ? response.json() : Promise.reject(response)
+                    })
+                    .then((dataJson) => {
+
+                        if (dataJson.valor) {
+                            alert("editado");
+                            $('.modal').modal('hide');
+                            listaTareas();
+                        }
+                    })
+
+            }
+
+        })
+
+        function listaTareas() {
+
+            fetch("Tarea/Lista")
+                .then((response) => {
+                    return response.ok ? response.json() : Promise.reject(response)
+                })
+                .then((dataJson) => {
+
+                    $("#tbTarea tbody").html("");
+
+                    dataJson.forEach((item) => {
+
+                        $("#tbTarea tbody").append(
+                            $("<tr>").append(
+                                $("<td>").text(item.proyectoId),
+                                $("<td>").text(item.nombre),
+                                $("<td>").text(item.descripcion),
+                                $("<td>").text(item.estado),
+                                $("<td>").text(item.asignadoA),
+                                $("<td>").text(item.fechaInicio),
+                                $("<td>").append(
+                                    $("<button>").addClass("btn btn-primary btn-sm me-2 btn-editar").data("modelo", item).text("Editar"),
+                                    $("<button>").addClass("btn btn-danger btn-sm btn-eliminar").data("id", item.id).text("Eliminar")
+                                )
+                            )
+                        )
+
+                    })
+
+
+                })
+
+        }
+
+        $("#tbTarea tbody").on("click", ".btn-editar", function () {
+            let Tarea = $(this).data("modelo")
+
+            mostrarModal(Tarea)
+        })
+
+
+        $("#tbTarea tbody").on("click", ".btn-eliminar", function () {
+            let id = $(this).data("id")
+
+            let resultado = window.confirm("¿Desea eliminar el Tarea?");
+
+
+            if (resultado) {
+
+
+                fetch("Tarea/Eliminar?id=" + id, {
+                    method: "DELETE"
+                })
+                    .then((response) => {
+                        return response.ok ? response.json() : Promise.reject(response)
+                    })
+                    .then((dataJson) => {
+
+                        if (dataJson.valor) {
+                            listaTareas();
+                        }
+                    })
+            }
+        })
+    </script>
+}

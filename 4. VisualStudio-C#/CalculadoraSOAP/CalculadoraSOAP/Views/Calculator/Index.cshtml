@@ -1,0 +1,30 @@
+﻿@model CalculadoraSOAP.ServiceCalculadoraSOAP.CalculatorSoapClient
+
+<h2>Calculadora</h2>
+
+@using (Html.BeginForm("Index", "Calculator", FormMethod.Post))
+{
+    <div>
+        <label>Número 1:</label>
+        @Html.TextBox("intA", null, new { type = "number", required = "required" })
+    </div>
+    <div>
+        <label>Número 2:</label>
+        @Html.TextBox("intB", null, new { type = "number", required = "required" })
+    </div>
+    <div>
+        <label>Operación:</label>
+        <button type="submit" name="operation" value="Add">Sumar</button>
+        <button type="submit" name="operation" value="Subtract">Restar</button>
+        <button type="submit" name="operation" value="Multiply">Multiplicar</button>
+        <button type="submit" name="operation" value="Divide">Dividir</button>
+    </div>
+}
+
+@if (ViewBag.Resultado != null)
+{
+    <div>
+        <label>Resultado:</label>
+        @ViewBag.Resultado
+    </div>
+}

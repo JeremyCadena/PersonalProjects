@@ -1,0 +1,8 @@
+espe\servidorsubasta\JakartaRestConfiguration.class
+espe\servidorsubasta\entidades\Usuarios.class
+espe\servidorsubasta\resources\JakartaEE10Resource.class
+espe\servidorsubasta\controladores\UsuariosControlador.class
+espe\servidorsubasta\entidades\Pujas.class
+espe\servidorsubasta\resources\ConexionDB.class
+espe\servidorsubasta\entidades\Subastas.class
+espe\servidorsubasta\modelos\UsuariosModelo.class

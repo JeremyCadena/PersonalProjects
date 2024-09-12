@@ -1,0 +1,226 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+
+<div class="row">
+    <div class="col-sm-12">
+
+        <!--Inicio tarjeta-->
+        <div class="card">
+            <div class="card-header">Proyectos</div>
+            <div class="card-body">
+
+                <button class="btn btn-success" id="btnNuevo">Nuevo Proyecto</button>
+
+                <hr />
+
+                <table class="table table-striped" id="tbProyecto">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripcion</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                            <th>Acciones</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <!--Fin tarjeta-->
+
+    </div>
+</div>
+
+
+
+<!--Inicio Modal-->
+<div class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detalle Proyecto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="txtIdProyecto" value="0" />
+                <div class="mb-2">
+                    <label>Nombre</label>
+                    <input type="text" class="form-control" id="txtNombre" />
+                </div>
+                <div class="mb-2">
+                    <label>Descripcion</label>
+                    <input type="text" class="form-control" id="txtDescripcion" />
+                </div>
+                <div class="mb-2">
+                    <label>Fecha Inicio</label>
+                    <input type="text" class="form-control" id="txtFechaInicio" />
+                </div>
+                <div class="mb-2">
+                    <label>Fecha Fin</label>
+                    <input type="text" class="form-control" id="txtFechaFin" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Fin Modal-->
+
+@section Scripts {
+
+    <script>
+
+        const Modelo_base = {
+            id : 0,
+            nombre : "",
+            descripcion : "",
+            fechaInicio : "",
+            fechaFin : ""
+        }
+
+        $(document).ready(() =>{
+
+            listaProyectos();
+        })
+
+        function mostrarModal(modelo){
+
+            $("#txtIdProyecto").val(modelo.id);
+            $("#txtNombre").val(modelo.nombre)
+            $("#txtDescripcion").val(modelo.descripcion)
+            $("#txtFechaInicio").val(modelo.fechaInicio)
+            $("#txtFechaFin").val(modelo.fechaFin)
+
+            $('.modal').modal('show');
+        }
+
+        $("#btnNuevo").click(() => {
+
+            mostrarModal(Modelo_base);
+        })
+
+        $("#btnGuardar").click(() => {
+            let NuevoModelo = Modelo_base;
+
+            NuevoModelo["id"] = $("#txtIdProyecto").val();
+            NuevoModelo["nombre"]  = $("#txtNombre").val();
+            NuevoModelo["descripcion"]  = $("#txtDescripcion").val();
+            NuevoModelo["fechaInicio"]  = $("#txtFechaInicio").val();
+            NuevoModelo["fechaFin"] = $("#txtFechaFin").val();
+
+            if($("#txtIdProyecto").val() == "0"){
+                fetch("Home/Insertar",{
+                    method:"POST",
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify(NuevoModelo)
+                })
+                .then((response) => {
+                    return response.ok ? response.json() : Promise.reject(response)
+                })
+                .then((dataJson) => {
+
+                    if(dataJson.valor){
+                        alert("registrado");
+                          $('.modal').modal('hide');
+                         listaProyectos();
+                    }
+                })
+            }else{
+                fetch("Home/Actualizar",{
+                        method:"PUT",
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: JSON.stringify( NuevoModelo)
+                    })
+                    .then((response) => {
+                        return response.ok ? response.json() : Promise.reject(response)
+                    })
+                    .then((dataJson) => {
+
+                        if(dataJson.valor){
+                            alert("editado");
+                              $('.modal').modal('hide');
+                             listaProyectos();
+                        }
+                    })
+
+            }
+
+        })
+
+        function listaProyectos(){
+
+            fetch("Home/Lista")
+            .then((response) => {
+                return response.ok ? response.json() : Promise.reject(response)
+            })
+            .then((dataJson) => {
+
+                $("#tbProyecto tbody").html("");
+
+                dataJson.forEach((item) => {
+
+                    $("#tbProyecto tbody").append(
+                        $("<tr>").append(
+                            $("<td>").text(item.nombre),
+                            $("<td>").text(item.descripcion),
+                            $("<td>").text(item.fechaInicio),
+                            $("<td>").text(item.fechaFin),
+                            $("<td>").append(
+                                $("<button>").addClass("btn btn-primary btn-sm me-2 btn-editar").data("modelo",item).text("Editar"),
+                                $("<button>").addClass("btn btn-danger btn-sm btn-eliminar").data("id",item.id).text("Eliminar")
+                            )
+                        )
+                    )
+
+                })
+
+
+            })
+
+        }
+
+        $("#tbProyecto tbody").on("click",".btn-editar",function(){
+            let Proyecto = $(this).data("modelo")
+
+            mostrarModal(Proyecto)
+        })
+
+
+        $("#tbProyecto tbody").on("click",".btn-eliminar",function(){
+            let id = $(this).data("id")
+
+            let resultado = window.confirm("¿Desea eliminar el Proyecto?");
+
+
+            if(resultado){
+
+
+                  fetch("Home/Eliminar?id=" + id,{
+                        method:"DELETE"
+                    })
+                    .then((response) => {
+                        return response.ok ? response.json() : Promise.reject(response)
+                    })
+                    .then((dataJson) => {
+
+                        if(dataJson.valor){
+                             listaProyectos();
+                        }
+                    })
+            }
+        })
+   </script>
+}

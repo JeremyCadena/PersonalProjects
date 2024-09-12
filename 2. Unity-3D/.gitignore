@@ -1,0 +1,40 @@
+# Archivos de Unity
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+*.pidb
+*.booproj
+*.svd
+*.userprefs
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userosscache
+*.rsuser
+*.swp
+*.lock
+*.lock.json
+*.log
+*.lgp
+*.logcat
+
+# Archivos de Visual Studio
+.vscode/
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
+.idea/
+
+# Sistema operativo Windows
+[Tt]humbs.db
+Desktop.ini
+
+# Archivos de Unity generados automáticamente que NO se deben subir
+/Assets/Plugins/Editor/JetBrains*

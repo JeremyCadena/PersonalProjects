@@ -1,0 +1,5 @@
+espe\rpcserver\models\ProductoModel.class
+espe\rpcserver\models\entity\Productos.class
+espe\rpcserver\RPCServer.class
+espe\rpcserver\controller\ProductosController.class
+espe\rpcserver\utils\ConexionDB.class

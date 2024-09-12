@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+</head>
+<body>
+    <h2>Iniciar sesión</h2>
+    <form id="loginForm">
+        <label for="username">Nombre de usuario:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="password">Contraseña:</label><br>
+        <input type="password" id="password" name="password"><br><br>
+        <input type="submit" value="Iniciar sesión">
+    </form>
+    
+     <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            let formData = new FormData(this);
+            fetch('/auth/login', { // Reemplaza 'URL_DEL_SERVIDOR' con la URL real de tu servidor
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al iniciar sesión');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Manejar la respuesta del servidor
+                console.log(data);
+                // Redirigir a una nueva página o realizar otras acciones según la respuesta del servidor
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

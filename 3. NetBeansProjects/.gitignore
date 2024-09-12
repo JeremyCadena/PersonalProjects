@@ -1,0 +1,27 @@
+# Directorio generado por NetBeans para almacenamiento de informacion del proyecto
+nbproject/private/
+
+# Directorios de compilacion y salida
+build/
+dist/
+
+# Archivos de salida de compilacion (JAR, WAR, etc.)
+*.jar
+*.war
+*.ear
+
+# Archivos temporales
+*.log
+
+# Archivos creados por el sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de respaldo o temporales
+*.bak
+*.swp
+*.swo
+*~ 
+
+# Archivos de configuracion de NetBeans que no es necesario compartir
+nb-configuration.xml
