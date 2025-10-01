@@ -1,0 +1,24 @@
+/* /styles/day-picker.css */
+
+.rdp {
+    --rdp-cell-size: 40px;
+    --rdp-accent-color: #04308C; 
+    --rdp-background-color: #D9E2F8; 
+    --rdp-accent-color-dark: #04308C;
+    --rdp-background-color-dark: #D9E2F8;
+    --rdp-outline: 2px solid var(--rdp-accent-color);
+    --rdp-outline-selected: 3px solid var(--rdp-accent-color);
+    margin: 1em;
+}
+
+.rdp-day_selected,
+.rdp-day_selected:focus-visible,
+.rdp-day_selected:hover {
+  background-color: var(--rdp-background-color);
+  color: var(--rdp-accent-color);
+  font-weight: bold;
+}
+
+.rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
+    background-color: #f0f4ff; /* Un hover muy sutil */
+}

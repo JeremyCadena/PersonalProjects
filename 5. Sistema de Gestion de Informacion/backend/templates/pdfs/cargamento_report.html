@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Entrega de Rastreo Satélital</title>
+    <style>
+        body { 
+            font-family: 'Helvetica Neue', sans-serif; 
+            margin: 0; 
+            padding: 0;
+            font-size: 9pt; 
+            color: #333; 
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; 
+            background-color: #f0f0f0; 
+        }
+        .container {
+            width: 210mm; 
+            height: 297mm; 
+            margin: auto; 
+            padding: 20mm; 
+            box-sizing: border-box; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card-box {
+            border: 1px solid #000000; 
+            border-radius: 8px;
+            padding: 0; 
+            width: 70%; 
+            max-width: 500px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background-color: #fff;
+            overflow: hidden; 
+        }
+        .banner {
+            width: 100%;
+            height: 80px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-top-left-radius: 6px; 
+            border-top-right-radius: 6px;
+            overflow: hidden; 
+        }
+        .banner img {
+            width: 100%; 
+            height: 100%;
+            object-fit: cover; 
+            display: block; 
+        }
+        .content-area {
+            padding: 20px; 
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr; 
+            gap: 12px; 
+        }
+        .info-item {
+            display: grid;
+            align-items: baseline;
+            gap: 8px;
+        }
+        .label {
+            font-weight: bold;
+            color: #000000;
+            min-width: 120px; 
+            flex-shrink: 0; 
+            padding-right: 5px;
+        }
+        .value {
+            flex-grow: 1; 
+        }
+        .blue-separator {
+            background-color: #253983; 
+            color: white;
+            padding: 8px 15px;
+            padding-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .na { 
+            color: #888; 
+            font-style: italic; 
+        }
+
+        @media print {
+            body {
+                background-color: #fff; 
+            }
+            .container {
+                box-shadow: none; 
+                border: none; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card-box">
+            <div class="banner">
+                <img src="img/BANNER-RASTREOS.png" alt="Banner Registro de Carga" /> 
+            </div>
+
+            <div class="content-area">
+                <div class="date-grid">
+                    <div class="info-item"><span class="label">FECHA DE ELABORACIÓN:</span> <span class="value">{{ cargamento.fecha }}</span></div>
+                </div>
+                
+                <div class="blue-separator">
+                    INFORMACIÓN ASOCIADA A LA ENTREGA DEL DISPOSITIVO DE RASTREO SATELITAL
+                </div>
+                
+                <div class="info-grid">
+                    <div class="info-item"><span class="label">{{ '' if cargamento.tipo_cargamento == 'carga_suelta' else 'CONTENEDOR' }}</span></div>
+                    {% if cargamento.tipo_cargamento == 'carga_suelta' %}
+                        <br><div class="info-item"><span class="label">TIPO DE VEHICULO:</span> <span class="value">{{ cargamento.tipo_cargasuelta or 'N/A' }}</span></div>
+                        <br><div class="info-item"><span class="label">RASTREO SATELITAL:</span> <span class="value">{{ cargamento.rastreo_cargasuelta or 'N/A' }}</span></div>
+                    {% elif cargamento.tipo_cargamento == 'contenedor' %}
+                        <br><div class="info-item"><span class="label">NÚMERO DE CONTENEDOR:</span> <span class="value">{{ cargamento.codigo_contenedor or 'N/A' }}</span></div>
+                        <br><div class="info-item"><span class="label">RASTREO SATELITAL:</span> <span class="value">{{ cargamento.rastreo_barra_contenedor or 'N/A' }}</span></div>
+                        <br><div class="info-item"><span class="label">SELLO DE BOTELLA:</span> <span class="value">{{ cargamento.rastreo_sello_contenedor or 'N/A' }}</span></div>
+                    {% endif %}
+                </div>
+                
+                <div class="blue-separator">
+                    INFORMACIÓN ASOCIADA AL CHOFER
+                </div>
+                <div class="info-grid">
+                    <div class="info-item"><span class="label">DOCUMENTO DE IDENTIDAD:</span> <span class="value">{{ chofer_info.cedula if chofer_info else '<span class="na">No disponible</span>' }}</span></div><br>
+                    <div class="info-item"><span class="label">CHOFER:</span> <span class="value">{{ chofer_info.nombres }} {{ chofer_info.apellidos }} {% if not chofer_info %}<span class="na">No disponible</span>{% endif %}</span></div><br>
+                    <div class="info-item"><span class="label">PLACA VEHÍCULO:</span> <span class="value">{{ chofer_info.placa_cabezal if chofer_info else '<span class="na">No disponible</span>' }}</span></div><br>
+                    <div class="info-item"><span class="label">CONTACTO TELEFÓNICO:</span> <span class="value">{{ chofer_info.telefono if chofer_info else '<span class="na">No disponible</span>' }}</span></div>
+                </div>
+
+                <div class="blue-separator">
+                    INFORMACIÓN DE AGRÍCOLA
+                </div>
+                <div class="info-grid">
+                    <div class="info-item"><span class="label">AGRÍCOLA:</span> <span class="value">{{ agricola_info.finca if agricola_info else '<span class="na">No disponible</span>' }}</span></div><br>
+                    <div class="info-item"><span class="label">EXPORTADORA:</span> <span class="value">{{ agricola_info.exportadora if agricola_info else '<span class="na">No disponible</span>' }}</span></div><br>
+                    <div class="info-item"><span class="label">MARCA DE CAJA:</span> <span class="value">{{ cargamento.marca or 'NO INFO'}}</span></div><br>
+                    <div class="info-item"><span class="label">VAPOR ASOCIADO:</span> <span class="value">{{ cargamento.vapor or 'NO INFO'}}</span></div><br>
+                    <div class="info-item"><span class="label">NUMERO DE VAPOR:</span> <span class="value">{{ cargamento.numero_vapor or 'NO INFO'}}</span></div><br>
+                    <div class="info-item"><span class="label">PUERTO:</span> <span class="value">{{ cargamento.puerto or 'NO INFO' }}</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

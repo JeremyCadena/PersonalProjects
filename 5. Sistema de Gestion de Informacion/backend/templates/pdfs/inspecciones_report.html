@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Inspecciones</title>
+    <style>
+        @page {
+            size: letter portrait; 
+            margin: 1.5cm; 
+        }
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            font-size: 9pt;
+            color: #333;
+        }
+        .card-box {
+            border: 1px solid #000000;
+            border-radius: 8px;
+            padding: 0;
+            width: 100%; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+            background-color: #fff;
+            overflow: hidden;
+        }
+        .banner {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            overflow: hidden;
+        }
+        .banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .content-area {
+            padding: 20px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .info-item {
+            display: grid;
+            align-items: baseline;
+            gap: 8px;
+        }
+        .label {
+            font-weight: bold;
+            color: #000000;
+            min-width: 120px;
+            flex-shrink: 0;
+            padding-right: 5px;
+        }
+        .value {
+            flex-grow: 1;
+        }
+        .blue-separator {
+            background-color: #253983;
+            color: white;
+            padding: 8px 15px;
+            padding-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .green-separator {
+            background-color: #15923a;
+            color: white;
+            padding: 8px 15px;
+            padding-top: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .na {
+            color: #888;
+            font-style: italic;
+        }
+        .image-gallery-table {
+            width: 100%;
+            border-collapse: collapse; 
+            margin-top: 0px;
+            page-break-inside: avoid; 
+        }
+        .image-gallery-table tr {
+            page-break-inside: avoid;
+        }
+        .image-gallery-table td {
+            width: 33.33%;
+            padding: 2px; 
+            text-align: center; 
+            vertical-align: top; 
+            box-sizing: border-box; 
+        }
+        .image-gallery-table img {
+            width: 180px; 
+            height: 185px;
+            object-fit: cover;
+            display: block; 
+            margin: 0 auto; 
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: sans-serif;
+            font-size: 12px;
+            margin-top: 15px; 
+            margin-bottom: 15px;
+        }
+
+        table td {
+            padding: 0px 0; 
+            vertical-align: top; 
+        }
+        .col-left {
+            width: 50%; 
+            padding-left: 20px;
+        }
+
+        .col-right {
+            width: 50%; 
+            padding-left: 20px;
+        }
+
+        @media print {
+            body {
+                background-color: #fff;
+            }
+            .container {
+                box-shadow: none;
+                border: none;
+            }
+            .card-box {
+                box-shadow: none; 
+                border: none; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card-box">
+        <div class="banner">
+            <img src="img/BANNER-INSPECCIONES.png" alt="Banner Inspecciones" />
+        </div>
+
+        <div class="content-area">
+            <table>
+                <tr>
+                    <td class="col-left">
+                    <span class="label">PRODUCTOR:</span>
+                    <span class="value">{{ cargamento.agricola_rel.productor or 'NO INFO'}}</span>
+                    </td>
+                    <td class="col-right">
+                    <span class="label">CÓDIGO:</span>
+                    <span class="value">{{ cargamento.agricola_rel.codigo or 'NO INFO'}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-left">
+                    <span class="label">FINCA:</span>
+                    <span class="value">{{ cargamento.agricola_rel.finca or 'NO INFO'}}</span>
+                    </td>
+                    <td class="col-right">
+                    <span class="label">EXPORTADORA:</span>
+                    <span class="value">{{ cargamento.agricola_rel.exportadora or 'NO INFO'}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-left">
+                    <span class="label">CHOFER:</span>
+                    <span class="value">
+                        {{ cargamento.chofer_rel.nombres }} {{ cargamento.chofer_rel.apellidos }}
+                        {% if not cargamento.chofer_rel %}<span class="na">No disponible</span>{% endif %}
+                    </span>
+                    </td>
+                    <td class="col-right">
+                    <span class="label">CONTACTO TELEFÓNICO:</span>
+                    <span class="value">
+                        {{ cargamento.chofer_rel.telefono if cargamento.chofer_rel else '<span class="na">No disponible</span>' }}
+                    </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-left">
+                    {% if cargamento.tipo_cargamento == 'contenedor' %}
+                        <span class="label">NÚMERO DE CONTENEDOR:</span>
+                        <span class="value">{{ cargamento.codigo_contenedor or 'N/A' }}</span>
+                    {% elif cargamento.tipo_cargamento == 'carga_suelta' %}
+                        <span class="label">TIPO DE VEHICULO:</span>
+                        <span class="value">{{ cargamento.tipo_cargasuelta or 'N/A' }}</span>
+                    {% endif %}
+                    </td>
+                    <td class="col-right">
+                    <span class="label">PLACA VEHÍCULO:</span>
+                    <span class="value">
+                        {{ cargamento.chofer_rel.placa_cabezal if cargamento.chofer_rel else '<span class="na">No disponible</span>' }}
+                    </span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-left">
+                    <span class="label">MARCA DE CAJA:</span>
+                    <span class="value">{{ cargamento.marca or 'NO INFO'}}</span>
+                    </td>
+                    <td class="col-right">
+                    <span class="label">PUERTO:</span>
+                    <span class="value">{{ cargamento.puerto or 'NO INFO' }}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-left">
+                    <span class="label">VAPOR ASOCIADO:</span>
+                    <span class="value">{{ cargamento.vapor or 'NO INFO'}}</span>
+                    </td>
+                    <td class="col-right">
+                    <span class="label">NUMERO DE VAPOR:</span>
+                    <span class="value">{{ cargamento.numero_vapor or 'NO INFO'}}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-left">
+                    {% if cargamento.tipo_cargamento == 'contenedor' %}
+                        <span class="label">DISPOSITIVO SATÉLITAL:</span>
+                        <span class="value">{{ cargamento.rastreo_barra_contenedor }} {{ cargamento.rastreo_sello_contenedor }}
+                        {% if not cargamento %}<span class="na">No disponible</span>{% endif %}
+                        </span>
+                    {% elif cargamento.tipo_cargamento == 'carga_suelta' %}
+                        <span class="label">DISPOSITIVO SATÉLITAL:</span>
+                        <span class="value">{{ cargamento.rastreo_cargasuelta or 'N/A' }}</span>
+                    {% endif %}
+                    </td>
+                    <td class="col-right">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-left">
+                    <span class="label">INSPECTOR:</span>
+                    <span class="value">
+                        {% if cargamento.inspecciones and cargamento.inspecciones[0].inspector_rel %}
+                        {{ cargamento.inspecciones[0].inspector_rel.nombres_apellidos }}
+                        {% else %}
+                        No asignado
+                        {% endif %}
+                    </span>
+                    </td>
+                    <td class="col-right">
+                    <span class="label">JEFE DE PLANTA:</span>
+                    <span class="value">
+                        {% if cargamento.inspecciones %}
+                        {{ cargamento.inspecciones[0].jefe_planta_nombre or 'No registrado' }}
+                        {% else %}
+                        No registrado
+                        {% endif %}
+                    </span>
+                    </td>
+                </tr>
+                </table>
+
+            <div class="blue-separator">
+                INFORMACIÓN DE INSPECCIONES
+            </div>
+
+            {% if cargamento.inspecciones %}
+            {% for inspeccion in cargamento.inspecciones %}
+                <div class="info-grid">
+                    <div class="green-separator">
+                        INSPECCIÓN {{ inspeccion.tipo_inspeccion }}
+                    </div>
+                        <div class="info-item"><span class="label">OBSERVACIONES:</span> {{ inspeccion.observacion or 'Sin observaciones.' }}</div><br>
+                        <div class="info-item"><span class="label">NIVEL DE RIESGO:</span> {{ inspeccion.nivel_riesgo or 'SIN RIESGO.' }}</div><br>
+                        {% if inspeccion.imagenes %}
+                            <div class="info-item"><span class="label">Evidencia Fotográfica</span></div>
+                            <table class="image-gallery-table">
+                                {% for i in range(inspeccion.imagenes|length) %}
+                                    {% if i % 3 == 0 %}
+                                        <tr> 
+                                    {% endif %}
+                                    <td>
+                                        <img src="{{ inspeccion.imagenes[i].url }}">
+                                    </td>
+                                    {% if i % 3 == 2 or loop.last %}
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </table>
+                        {% endif %}
+                </div>
+            {% endfor %}
+            {% else %}
+                <p>No se encontraron inspecciones para este cargamento.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

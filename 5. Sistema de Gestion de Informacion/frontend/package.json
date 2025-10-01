@@ -1,0 +1,69 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --turbopack",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@heroicons/react": "^2.2.0",
+    "@mui/icons-material": "^7.2.0",
+    "@mui/material": "^7.2.0",
+    "@mui/styled-engine-sc": "^7.2.0",
+    "@mui/x-charts": "^8.9.2",
+    "@nivo/core": "^0.99.0",
+    "@nivo/geo": "^0.99.0",
+    "@nivo/treemap": "^0.99.0",
+    "@tailwindcss/forms": "^0.5.10",
+    "@types/js-cookie": "^3.0.6",
+    "autoprefixer": "10.4.20",
+    "bcrypt": "^5.1.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "d3-scale": "^4.0.2",
+    "d3-scale-chromatic": "^3.1.0",
+    "date-fns": "^4.1.0",
+    "dayjs": "^1.11.13",
+    "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
+    "lodash": "^4.17.21",
+    "lucide-react": "^0.525.0",
+    "next": "latest",
+    "next-auth": "5.0.0-beta.25",
+    "postcss": "8.5.1",
+    "postgres": "^3.4.6",
+    "react": "latest",
+    "react-day-picker": "^9.9.0",
+    "react-dom": "latest",
+    "react-dropzone": "^14.3.8",
+    "react-flag-kit": "^1.1.1",
+    "react-icons": "^5.5.0",
+    "react-simple-maps": "^3.0.0",
+    "react-tooltip": "^5.29.1",
+    "recharts": "^3.1.0",
+    "styled-components": "^6.1.19",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "3.4.17",
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "5.7.3",
+    "use-debounce": "^10.0.4",
+    "zod": "^3.25.17"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/d3-scale": "^4.0.9",
+    "@types/d3-scale-chromatic": "^3.1.0",
+    "@types/node": "22.10.7",
+    "@types/react": "19.0.7",
+    "@types/react-dom": "19.0.3",
+    "@types/react-simple-maps": "^3.0.6"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "bcrypt",
+      "sharp"
+    ]
+  }
+}
